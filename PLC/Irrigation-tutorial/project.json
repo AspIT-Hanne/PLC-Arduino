@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "name": "Irrigation_tutorial",
+    "type": "plc-project"
+  },
+  "data": {
+    "dataTypes": [
+      {
+        "name": "irrigation_State",
+        "derivation": "enumerated",
+        "initialValue": "",
+        "values": [
+          {
+            "description": "Stopped"
+          },
+          {
+            "description": "Running"
+          },
+          {
+            "description": "Manual"
+          }
+        ]
+      }
+    ],
+    "pous": [],
+    "configuration": {
+      "resource": {
+        "tasks": [
+          {
+            "name": "task0",
+            "triggering": "Cyclic",
+            "interval": "T#20ms",
+            "priority": 1
+          }
+        ],
+        "instances": [
+          {
+            "name": "instance0",
+            "task": "task0",
+            "program": "main"
+          }
+        ],
+        "globalVariables": []
+      }
+    },
+    "debugVariables": {
+      "pous": {
+        "main": [
+          "IRRIGATION_MAIN_CONTROLLER0",
+          "STATE_DISPLAY0",
+          "MANUAL_OVERRIDE0",
+          "State",
+          "Low_Moisture_Sensor",
+          "Stopped_led",
+          "Running_led",
+          "Manual_led",
+          "Manual_valve",
+          "Valve",
+          "R_TRIG0",
+          "Set_manual",
+          "F_TRIG0",
+          "STATE_DISPLAY1"
+        ]
+      }
+    },
+    "deletedPous": []
+  }
+}
