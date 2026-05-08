@@ -600,8 +600,10 @@ END_VAR
                 "value": "irrigation_State"
               },
               "location": "",
+              "initialValue": null,
               "documentation": "",
-              "debug": false
+              "debug": false,
+              "id": "broken-VARIABLE_d94717b1-8bcf-494f-8733-8d64b382f2a1"
             },
             "executionOrder": 0,
             "variant": "input",
@@ -619,7 +621,8 @@ END_VAR
             },
             "draggable": false,
             "selectable": true,
-            "deletable": false
+            "deletable": false,
+            "wrongVariable": true
           }
         },
         {
@@ -774,14 +777,16 @@ END_VAR
             "numericId": "8894013",
             "variable": {
               "name": "man_mode",
+              "class": "local",
               "type": {
                 "definition": "base-type",
                 "value": "bool"
               },
-              "class": "local",
               "location": "",
+              "initialValue": null,
               "documentation": "",
-              "debug": false
+              "debug": false,
+              "id": "broken-VARIABLE_26c70d97-00c3-4fbe-a26c-fee7fc2e77ad"
             },
             "executionOrder": 0,
             "variant": "output",
@@ -799,7 +804,8 @@ END_VAR
             },
             "draggable": false,
             "selectable": true,
-            "deletable": false
+            "deletable": false,
+            "wrongVariable": true
           }
         }
       ],
@@ -2848,8 +2854,10 @@ END_VAR
                 "value": "time"
               },
               "location": "",
+              "initialValue": null,
               "documentation": "",
-              "debug": false
+              "debug": false,
+              "id": "broken-VARIABLE_72160640-6faf-4ceb-81bb-4308d416a838"
             },
             "executionOrder": 0,
             "variant": "input",
@@ -2868,7 +2876,8 @@ END_VAR
             },
             "draggable": false,
             "selectable": true,
-            "deletable": false
+            "deletable": false,
+            "wrongVariable": true
           }
         },
         {
@@ -3033,8 +3042,10 @@ END_VAR
                 "value": "time"
               },
               "location": "",
+              "initialValue": null,
               "documentation": "",
-              "debug": false
+              "debug": false,
+              "id": "broken-VARIABLE_bfefffe3-fd1b-46df-8800-1154c5ead862"
             },
             "executionOrder": 0,
             "variant": "input",
@@ -3053,7 +3064,8 @@ END_VAR
             },
             "draggable": false,
             "selectable": true,
-            "deletable": false
+            "deletable": false,
+            "wrongVariable": true
           }
         },
         {
@@ -4125,8 +4137,10 @@ END_VAR
                 "value": "irrigation_State"
               },
               "location": "",
+              "initialValue": null,
               "documentation": "",
-              "debug": false
+              "debug": false,
+              "id": "broken-VARIABLE_1aed1f54-b2e1-42f2-9cc2-7eb0e5cea467"
             },
             "executionOrder": 0,
             "variant": "output",
@@ -4144,7 +4158,8 @@ END_VAR
             },
             "draggable": false,
             "selectable": true,
-            "deletable": false
+            "deletable": false,
+            "wrongVariable": true
           }
         }
       ],
@@ -5103,8 +5118,10 @@ END_VAR
                 "value": "irrigation_State"
               },
               "location": "",
+              "initialValue": null,
               "documentation": "",
-              "debug": false
+              "debug": false,
+              "id": "broken-VARIABLE_64458da0-e563-4a38-9fc7-58aaa04669ad"
             },
             "executionOrder": 0,
             "variant": "output",
@@ -5122,7 +5139,8 @@ END_VAR
             },
             "draggable": false,
             "selectable": true,
-            "deletable": false
+            "deletable": false,
+            "wrongVariable": true
           }
         }
       ],

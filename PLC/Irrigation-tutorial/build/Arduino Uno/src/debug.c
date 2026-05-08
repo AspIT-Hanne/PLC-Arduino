@@ -27,7 +27,7 @@
 #define SAME_ENDIANNESS      0
 #define REVERSE_ENDIANNESS   1
 
-char plc_program_md5[] = "9ca67069cdf5d046d9217b0251f1d08e";
+char plc_program_md5[] = "589b2a69a2320cf26758909dc5ef32e5";
 
 uint8_t endianness;
 
@@ -104,9 +104,10 @@ static const struct {
     {&(RES0__INSTANCE0.SET_MANUAL), BOOL_P_ENUM},
     {&(RES0__INSTANCE0._TMP_STATE_TO_NUM9679397_OUT), INT_ENUM},
     {&(RES0__INSTANCE0._TMP_SET_STATE8504218_ENO), BOOL_ENUM},
+    {&(RES0__INSTANCE0._TMP_SET_STATE8542285_ENO), BOOL_ENUM},
 };
 
-#define VAR_COUNT               66
+#define VAR_COUNT               67
 
 uint16_t get_var_count(void)
 {
@@ -120,16 +121,16 @@ size_t get_var_size(size_t idx)
         return 0;
     }
     switch (debug_vars[idx].type) {
-    case TIME_ENUM:
-        return sizeof(TIME);
-    case SINT_ENUM:
-        return sizeof(SINT);
     case INT_ENUM:
         return sizeof(INT);
     case BOOL_ENUM:
     case BOOL_O_ENUM:
     case BOOL_P_ENUM:
         return sizeof(BOOL);
+    case SINT_ENUM:
+        return sizeof(SINT);
+    case TIME_ENUM:
+        return sizeof(TIME);
     default:
         return 0;
     }
@@ -140,10 +141,6 @@ void *get_var_addr(size_t idx)
     void *ptr = debug_vars[idx].ptr;
 
     switch (debug_vars[idx].type) {
-    case TIME_ENUM:
-        return (void *)&((__IEC_TIME_t *) ptr)->value;
-    case SINT_ENUM:
-        return (void *)&((__IEC_SINT_t *) ptr)->value;
     case INT_ENUM:
         return (void *)&((__IEC_INT_t *) ptr)->value;
     case BOOL_ENUM:
@@ -153,6 +150,10 @@ void *get_var_addr(size_t idx)
         return (void *)((((__IEC_BOOL_p *) ptr)->flags & __IEC_FORCE_FLAG)
                         ? &(((__IEC_BOOL_p *) ptr)->fvalue)
                         : ((__IEC_BOOL_p *) ptr)->value);
+    case SINT_ENUM:
+        return (void *)&((__IEC_SINT_t *) ptr)->value;
+    case TIME_ENUM:
+        return (void *)&((__IEC_TIME_t *) ptr)->value;
     default:
         return 0;
     }
@@ -165,18 +166,6 @@ void force_var(size_t idx, bool forced, void *val)
     if (forced) {
         size_t var_size = get_var_size(idx);
         switch (debug_vars[idx].type) {
-        case TIME_ENUM: {
-            memcpy(&((__IEC_TIME_t *) ptr)->value, val, var_size);
-            ((__IEC_TIME_t *) ptr)->flags |= __IEC_FORCE_FLAG;
-            break;
-        }
-    
-        case SINT_ENUM: {
-            memcpy(&((__IEC_SINT_t *) ptr)->value, val, var_size);
-            ((__IEC_SINT_t *) ptr)->flags |= __IEC_FORCE_FLAG;
-            break;
-        }
-    
         case INT_ENUM: {
             memcpy(&((__IEC_INT_t *) ptr)->value, val, var_size);
             ((__IEC_INT_t *) ptr)->flags |= __IEC_FORCE_FLAG;
@@ -200,17 +189,23 @@ void force_var(size_t idx, bool forced, void *val)
             ((__IEC_BOOL_p *) ptr)->flags |= __IEC_FORCE_FLAG;
             break;
         }
+        case SINT_ENUM: {
+            memcpy(&((__IEC_SINT_t *) ptr)->value, val, var_size);
+            ((__IEC_SINT_t *) ptr)->flags |= __IEC_FORCE_FLAG;
+            break;
+        }
+    
+        case TIME_ENUM: {
+            memcpy(&((__IEC_TIME_t *) ptr)->value, val, var_size);
+            ((__IEC_TIME_t *) ptr)->flags |= __IEC_FORCE_FLAG;
+            break;
+        }
+    
         default:
             break;
         }
     } else {
         switch (debug_vars[idx].type) {
-        case TIME_ENUM:
-            ((__IEC_TIME_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;
-            break;
-        case SINT_ENUM:
-            ((__IEC_SINT_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;
-            break;
         case INT_ENUM:
             ((__IEC_INT_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;
             break;
@@ -220,6 +215,12 @@ void force_var(size_t idx, bool forced, void *val)
         case BOOL_O_ENUM:
         case BOOL_P_ENUM:
             ((__IEC_BOOL_p *) ptr)->flags &= ~__IEC_FORCE_FLAG;
+            break;
+        case SINT_ENUM:
+            ((__IEC_SINT_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;
+            break;
+        case TIME_ENUM:
+            ((__IEC_TIME_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;
             break;
         default:
             break;
