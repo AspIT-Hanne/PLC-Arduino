@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "name": "Uno_Test",
+    "type": "plc-project"
+  },
+  "data": {
+    "dataTypes": [],
+    "pous": [],
+    "configuration": {
+      "resource": {
+        "tasks": [
+          {
+            "name": "task0",
+            "triggering": "Cyclic",
+            "interval": "T#20ms",
+            "priority": 1
+          }
+        ],
+        "instances": [
+          {
+            "name": "instance0",
+            "task": "task0",
+            "program": "main"
+          }
+        ],
+        "globalVariables": []
+      }
+    },
+    "debugVariables": {
+      "pous": {
+        "main": [
+          "PushBtn",
+          "LEDBlue",
+          "LEDGreen",
+          "LEDYellow",
+          "LEDRed",
+          "DebounceTime",
+          "ledNo",
+          "BtnDelay",
+          "TONBtnDelay",
+          "BtnTrigger",
+          "triggerReset",
+          "CountUpLEDNo",
+          "LEDRed_Active",
+          "LEDYellow_Active",
+          "LEDGreen_Active",
+          "LEDBlue_Active"
+        ]
+      }
+    },
+    "deletedPous": []
+  }
+}

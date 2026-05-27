@@ -2300,7 +2300,8 @@ END_VAR
             "location": "%IX0.0",
             "initialValue": null,
             "documentation": "",
-            "debug": true
+            "debug": false,
+            "id": "broken-INPUT-VARIABLE_3b953c39-2314-4e1d-8945-08b1fe6e9535"
           },
           "executionOrder": 0,
           "variant": "input-variable",

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0201" xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ns1="http://www.plcopen.org/xml/tc6_0201">
-  <fileHeader companyName="Unknown" productName="Unnamed" productVersion="1" creationDateTime="2026-02-04T14:51:23"/>
-  <contentHeader name="Unnamed" modificationDateTime="2026-02-04T14:51:23">
+  <fileHeader companyName="Unknown" productName="Unnamed" productVersion="1" creationDateTime="2026-02-04T19:10:09"/>
+  <contentHeader name="Unnamed" modificationDateTime="2026-02-04T19:10:09">
     <coordinateInfo>
       <fbd>
         <scaling x="16" y="16"/>
@@ -75,11 +75,7 @@ end_if;]]></xhtml:p>
         </interface>
         <body>
           <ST>
-            <xhtml:p><![CDATA[if State = Running OR State = Stopped then
-    set_State := Manual;
-elsif State = Manual then
-    set_State := Stopped;
-end_if;]]></xhtml:p>
+            <xhtml:p><![CDATA[set_State := State;]]></xhtml:p>
           </ST>
         </body>
         <documentation>
@@ -988,6 +984,70 @@ exit_prg:]]></xhtml:p>
                 </variable>
               </outputVariables>
             </block>
+            <block localId="8542285" typeName="set_State" executionOrderId="0" height="120" width="108">
+              <position x="1040" y="736"/>
+              <inputVariables>
+                <variable formalParameter="EN">
+                  <connectionPointIn>
+                    <relPosition x="0" y="48"/>
+                    <connection refLocalId="5679127" formalParameter="Q">
+                      <position x="1040" y="640"/>
+                      <position x="932" y="640"/>
+                      <position x="932" y="672"/>
+                      <position x="824" y="672"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+                <variable formalParameter="State">
+                  <connectionPointIn>
+                    <relPosition x="0" y="96"/>
+                    <connection refLocalId="9953170">
+                      <position x="1040" y="688"/>
+                      <position x="1040" y="688"/>
+                      <position x="1040" y="720"/>
+                      <position x="1040" y="720"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="ENO">
+                  <connectionPointOut>
+                    <relPosition x="108" y="48"/>
+                  </connectionPointOut>
+                </variable>
+                <variable formalParameter="OUT">
+                  <connectionPointOut>
+                    <relPosition x="108" y="96"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
+            <block localId="5679127" typeName="F_TRIG" instanceName="F_TRIG0" executionOrderId="0" height="72" width="72">
+              <position x="912" y="736"/>
+              <inputVariables>
+                <variable formalParameter="CLK">
+                  <connectionPointIn>
+                    <relPosition x="0" y="48"/>
+                    <connection refLocalId="4873220">
+                      <position x="752" y="672"/>
+                      <position x="824" y="672"/>
+                      <position x="824" y="640"/>
+                      <position x="896" y="640"/>
+                    </connection>
+                  </connectionPointIn>
+                </variable>
+              </inputVariables>
+              <inOutVariables/>
+              <outputVariables>
+                <variable formalParameter="Q">
+                  <connectionPointOut>
+                    <relPosition x="72" y="48"/>
+                  </connectionPointOut>
+                </variable>
+              </outputVariables>
+            </block>
             <block localId="9679397" typeName="state_To_Num" executionOrderId="0" height="72" width="144">
               <position x="800" y="96"/>
               <inputVariables>
@@ -1079,7 +1139,7 @@ exit_prg:]]></xhtml:p>
               <connectionPointOut>
                 <relPosition x="112" y="16"/>
               </connectionPointOut>
-              <expression>State</expression>
+              <expression>Manual</expression>
             </inVariable>
             <inVariable localId="7201553" executionOrderId="0" height="32" width="128" negated="false">
               <position x="64" y="768"/>
@@ -1087,6 +1147,20 @@ exit_prg:]]></xhtml:p>
                 <relPosition x="112" y="16"/>
               </connectionPointOut>
               <expression>Set_manual</expression>
+            </inVariable>
+            <inVariable localId="4873220" executionOrderId="0" height="32" width="128" negated="false">
+              <position x="752" y="768"/>
+              <connectionPointOut>
+                <relPosition x="112" y="16"/>
+              </connectionPointOut>
+              <expression>Set_manual</expression>
+            </inVariable>
+            <inVariable localId="9953170" executionOrderId="0" height="32" width="128" negated="false">
+              <position x="864" y="816"/>
+              <connectionPointOut>
+                <relPosition x="112" y="16"/>
+              </connectionPointOut>
+              <expression>Stopped</expression>
             </inVariable>
             <outVariable localId="559289" executionOrderId="0" height="32" width="128" negated="false">
               <position x="1312" y="128"/>
@@ -1147,6 +1221,19 @@ exit_prg:]]></xhtml:p>
                   <position x="526" y="560"/>
                   <position x="526" y="544"/>
                   <position x="492" y="544"/>
+                </connection>
+              </connectionPointIn>
+              <expression>State</expression>
+            </outVariable>
+            <outVariable localId="9212722" executionOrderId="0" height="32" width="128" negated="false">
+              <position x="1200" y="816"/>
+              <connectionPointIn>
+                <relPosition x="0" y="16"/>
+                <connection refLocalId="8542285" formalParameter="OUT">
+                  <position x="1200" y="704"/>
+                  <position x="1174" y="704"/>
+                  <position x="1174" y="688"/>
+                  <position x="1148" y="688"/>
                 </connection>
               </connectionPointIn>
               <expression>State</expression>

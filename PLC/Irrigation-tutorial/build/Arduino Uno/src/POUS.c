@@ -47,11 +47,7 @@ IRRIGATION_STATE SET_STATE(
     }
     return SET_STATE;
   }
-  if (((STATE == IRRIGATION_STATE__RUNNING) || (STATE == IRRIGATION_STATE__STOPPED))) {
-    SET_STATE = IRRIGATION_STATE__MANUAL;
-  } else if ((STATE == IRRIGATION_STATE__MANUAL)) {
-    SET_STATE = IRRIGATION_STATE__STOPPED;
-  };
+  SET_STATE = STATE;
 
   goto __end;
 
@@ -333,6 +329,19 @@ static inline IRRIGATION_STATE __MAIN_SET_STATE1(BOOL EN,
   return __res;
 }
 
+static inline IRRIGATION_STATE __MAIN_SET_STATE2(BOOL EN,
+  IRRIGATION_STATE STATE,
+  MAIN *data__)
+{
+  IRRIGATION_STATE __res;
+  BOOL __TMP_ENO = __GET_VAR(data__->_TMP_SET_STATE8542285_ENO,);
+  __res = SET_STATE(EN,
+    &__TMP_ENO,
+    STATE);
+  __SET_VAR(,data__->_TMP_SET_STATE8542285_ENO,,__TMP_ENO);
+  return __res;
+}
+
 void MAIN_init__(MAIN *data__, BOOL retain) {
   IRRIGATION_MAIN_CONTROLLER_init__(&data__->IRRIGATION_MAIN_CONTROLLER0,retain);
   STATE_DISPLAY_init__(&data__->STATE_DISPLAY0,retain);
@@ -355,6 +364,8 @@ void MAIN_init__(MAIN *data__, BOOL retain) {
   __INIT_VAR(data__->_TMP_STATE_TO_NUM9679397_OUT,0,retain)
   __INIT_VAR(data__->_TMP_SET_STATE8504218_ENO,__BOOL_LITERAL(FALSE),retain)
   __INIT_VAR(data__->_TMP_SET_STATE8504218_OUT,IRRIGATION_STATE__STOPPED,retain)
+  __INIT_VAR(data__->_TMP_SET_STATE8542285_ENO,__BOOL_LITERAL(FALSE),retain)
+  __INIT_VAR(data__->_TMP_SET_STATE8542285_OUT,IRRIGATION_STATE__STOPPED,retain)
 }
 
 // Code part
@@ -383,10 +394,19 @@ void MAIN_body__(MAIN *data__) {
   R_TRIG_body__(&data__->R_TRIG0);
   __SET_VAR(data__->,_TMP_SET_STATE8504218_OUT,,__MAIN_SET_STATE1(
     (BOOL)__GET_VAR(data__->R_TRIG0.Q,),
-    (IRRIGATION_STATE)__GET_VAR(data__->STATE,),
+    (IRRIGATION_STATE)IRRIGATION_STATE__MANUAL,
+    data__));
+  __SET_VAR(data__->F_TRIG0.,CLK,,__GET_LOCATED(data__->SET_MANUAL,));
+  F_TRIG_body__(&data__->F_TRIG0);
+  __SET_VAR(data__->,_TMP_SET_STATE8542285_OUT,,__MAIN_SET_STATE2(
+    (BOOL)__GET_VAR(data__->F_TRIG0.Q,),
+    (IRRIGATION_STATE)IRRIGATION_STATE__STOPPED,
     data__));
   if (__GET_VAR(data__->_TMP_SET_STATE8504218_ENO,)) {
     __SET_VAR(data__->,STATE,,__GET_VAR(data__->_TMP_SET_STATE8504218_OUT,));
+  };
+  if (__GET_VAR(data__->_TMP_SET_STATE8542285_ENO,)) {
+    __SET_VAR(data__->,STATE,,__GET_VAR(data__->_TMP_SET_STATE8542285_OUT,));
   };
 
   goto __end;

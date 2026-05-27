@@ -20,11 +20,7 @@ FUNCTION set_State : irrigation_State
     State : irrigation_State;
   END_VAR
 
-  if State = Running OR State = Stopped then
-      set_State := Manual;
-  elsif State = Manual then
-      set_State := Stopped;
-  end_if;
+  set_State := State;
 END_FUNCTION
 
 FUNCTION state_To_Num : INT
@@ -177,6 +173,8 @@ PROGRAM main
     _TMP_state_To_Num9679397_OUT : INT;
     _TMP_set_State8504218_ENO : BOOL;
     _TMP_set_State8504218_OUT : irrigation_State;
+    _TMP_set_State8542285_ENO : BOOL;
+    _TMP_set_State8542285_OUT : irrigation_State;
   END_VAR
 
   IRRIGATION_MAIN_CONTROLLER0(State := State, Moisture := Low_Moisture_Sensor, T_Max := T#5s);
@@ -188,9 +186,14 @@ PROGRAM main
   MANUAL_OVERRIDE0(State := IRRIGATION_MAIN_CONTROLLER0.State, Manual_control := Manual_valve);
   Valve := MANUAL_OVERRIDE0.Valve;
   R_TRIG0(CLK := Set_manual);
-  _TMP_set_State8504218_OUT := set_State(EN := R_TRIG0.Q, State := State, ENO => _TMP_set_State8504218_ENO);
+  _TMP_set_State8504218_OUT := set_State(EN := R_TRIG0.Q, State := Manual, ENO => _TMP_set_State8504218_ENO);
+  F_TRIG0(CLK := Set_manual);
+  _TMP_set_State8542285_OUT := set_State(EN := F_TRIG0.Q, State := Stopped, ENO => _TMP_set_State8542285_ENO);
   IF _TMP_set_State8504218_ENO THEN
       State := _TMP_set_State8504218_OUT;
+  END_IF;
+  IF _TMP_set_State8542285_ENO THEN
+      State := _TMP_set_State8542285_OUT;
   END_IF;
 END_PROGRAM
 
@@ -203,7 +206,7 @@ CONFIGURATION Config0
   END_RESOURCE
 END_CONFIGURATION
 
-(*DBG:char md5[] = "9ca67069cdf5d046d9217b0251f1d08e";*)
+(*DBG:char md5[] = "589b2a69a2320cf26758909dc5ef32e5";*)
 (*DBG:/**)
 (*DBG: * This file is part of OpenPLC Runtime*)
 (*DBG: **)
@@ -233,7 +236,7 @@ END_CONFIGURATION
 (*DBG:#define SAME_ENDIANNESS      0*)
 (*DBG:#define REVERSE_ENDIANNESS   1*)
 (*DBG:*)
-(*DBG:char plc_program_md5[] = "9ca67069cdf5d046d9217b0251f1d08e";*)
+(*DBG:char plc_program_md5[] = "589b2a69a2320cf26758909dc5ef32e5";*)
 (*DBG:*)
 (*DBG:uint8_t endianness;*)
 (*DBG:*)
@@ -310,9 +313,10 @@ END_CONFIGURATION
 (*DBG:    {&(RES0__INSTANCE0.SET_MANUAL), BOOL_P_ENUM},*)
 (*DBG:    {&(RES0__INSTANCE0._TMP_STATE_TO_NUM9679397_OUT), INT_ENUM},*)
 (*DBG:    {&(RES0__INSTANCE0._TMP_SET_STATE8504218_ENO), BOOL_ENUM},*)
+(*DBG:    {&(RES0__INSTANCE0._TMP_SET_STATE8542285_ENO), BOOL_ENUM},*)
 (*DBG:};*)
 (*DBG:*)
-(*DBG:#define VAR_COUNT               66*)
+(*DBG:#define VAR_COUNT               67*)
 (*DBG:*)
 (*DBG:uint16_t get_var_count(void)*)
 (*DBG:{*)
@@ -326,16 +330,16 @@ END_CONFIGURATION
 (*DBG:        return 0;*)
 (*DBG:    }*)
 (*DBG:    switch (debug_vars[idx].type) {*)
-(*DBG:    case TIME_ENUM:*)
-(*DBG:        return sizeof(TIME);*)
-(*DBG:    case SINT_ENUM:*)
-(*DBG:        return sizeof(SINT);*)
 (*DBG:    case INT_ENUM:*)
 (*DBG:        return sizeof(INT);*)
 (*DBG:    case BOOL_ENUM:*)
 (*DBG:    case BOOL_O_ENUM:*)
 (*DBG:    case BOOL_P_ENUM:*)
 (*DBG:        return sizeof(BOOL);*)
+(*DBG:    case SINT_ENUM:*)
+(*DBG:        return sizeof(SINT);*)
+(*DBG:    case TIME_ENUM:*)
+(*DBG:        return sizeof(TIME);*)
 (*DBG:    default:*)
 (*DBG:        return 0;*)
 (*DBG:    }*)
@@ -346,10 +350,6 @@ END_CONFIGURATION
 (*DBG:    void *ptr = debug_vars[idx].ptr;*)
 (*DBG:*)
 (*DBG:    switch (debug_vars[idx].type) {*)
-(*DBG:    case TIME_ENUM:*)
-(*DBG:        return (void *)&((__IEC_TIME_t *) ptr)->value;*)
-(*DBG:    case SINT_ENUM:*)
-(*DBG:        return (void *)&((__IEC_SINT_t *) ptr)->value;*)
 (*DBG:    case INT_ENUM:*)
 (*DBG:        return (void *)&((__IEC_INT_t *) ptr)->value;*)
 (*DBG:    case BOOL_ENUM:*)
@@ -359,6 +359,10 @@ END_CONFIGURATION
 (*DBG:        return (void *)((((__IEC_BOOL_p *) ptr)->flags & __IEC_FORCE_FLAG)*)
 (*DBG:                        ? &(((__IEC_BOOL_p *) ptr)->fvalue)*)
 (*DBG:                        : ((__IEC_BOOL_p *) ptr)->value);*)
+(*DBG:    case SINT_ENUM:*)
+(*DBG:        return (void *)&((__IEC_SINT_t *) ptr)->value;*)
+(*DBG:    case TIME_ENUM:*)
+(*DBG:        return (void *)&((__IEC_TIME_t *) ptr)->value;*)
 (*DBG:    default:*)
 (*DBG:        return 0;*)
 (*DBG:    }*)
@@ -371,18 +375,6 @@ END_CONFIGURATION
 (*DBG:    if (forced) {*)
 (*DBG:        size_t var_size = get_var_size(idx);*)
 (*DBG:        switch (debug_vars[idx].type) {*)
-(*DBG:        case TIME_ENUM: {*)
-(*DBG:            memcpy(&((__IEC_TIME_t *) ptr)->value, val, var_size);*)
-(*DBG:            ((__IEC_TIME_t *) ptr)->flags |= __IEC_FORCE_FLAG;*)
-(*DBG:            break;*)
-(*DBG:        }*)
-(*DBG:    *)
-(*DBG:        case SINT_ENUM: {*)
-(*DBG:            memcpy(&((__IEC_SINT_t *) ptr)->value, val, var_size);*)
-(*DBG:            ((__IEC_SINT_t *) ptr)->flags |= __IEC_FORCE_FLAG;*)
-(*DBG:            break;*)
-(*DBG:        }*)
-(*DBG:    *)
 (*DBG:        case INT_ENUM: {*)
 (*DBG:            memcpy(&((__IEC_INT_t *) ptr)->value, val, var_size);*)
 (*DBG:            ((__IEC_INT_t *) ptr)->flags |= __IEC_FORCE_FLAG;*)
@@ -406,17 +398,23 @@ END_CONFIGURATION
 (*DBG:            ((__IEC_BOOL_p *) ptr)->flags |= __IEC_FORCE_FLAG;*)
 (*DBG:            break;*)
 (*DBG:        }*)
+(*DBG:        case SINT_ENUM: {*)
+(*DBG:            memcpy(&((__IEC_SINT_t *) ptr)->value, val, var_size);*)
+(*DBG:            ((__IEC_SINT_t *) ptr)->flags |= __IEC_FORCE_FLAG;*)
+(*DBG:            break;*)
+(*DBG:        }*)
+(*DBG:    *)
+(*DBG:        case TIME_ENUM: {*)
+(*DBG:            memcpy(&((__IEC_TIME_t *) ptr)->value, val, var_size);*)
+(*DBG:            ((__IEC_TIME_t *) ptr)->flags |= __IEC_FORCE_FLAG;*)
+(*DBG:            break;*)
+(*DBG:        }*)
+(*DBG:    *)
 (*DBG:        default:*)
 (*DBG:            break;*)
 (*DBG:        }*)
 (*DBG:    } else {*)
 (*DBG:        switch (debug_vars[idx].type) {*)
-(*DBG:        case TIME_ENUM:*)
-(*DBG:            ((__IEC_TIME_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;*)
-(*DBG:            break;*)
-(*DBG:        case SINT_ENUM:*)
-(*DBG:            ((__IEC_SINT_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;*)
-(*DBG:            break;*)
 (*DBG:        case INT_ENUM:*)
 (*DBG:            ((__IEC_INT_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;*)
 (*DBG:            break;*)
@@ -426,6 +424,12 @@ END_CONFIGURATION
 (*DBG:        case BOOL_O_ENUM:*)
 (*DBG:        case BOOL_P_ENUM:*)
 (*DBG:            ((__IEC_BOOL_p *) ptr)->flags &= ~__IEC_FORCE_FLAG;*)
+(*DBG:            break;*)
+(*DBG:        case SINT_ENUM:*)
+(*DBG:            ((__IEC_SINT_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;*)
+(*DBG:            break;*)
+(*DBG:        case TIME_ENUM:*)
+(*DBG:            ((__IEC_TIME_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;*)
 (*DBG:            break;*)
 (*DBG:        default:*)
 (*DBG:            break;*)
