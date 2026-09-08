@@ -4070,7 +4070,7 @@ END_VAR
     },
     {
       "id": "rung_main_2df42426-3f20-40e0-99d6-4e391268f62c",
-      "comment": "",
+      "comment": "If ledNo = 1 then activate yellow LED",
       "defaultBounds": [
         300,
         100
@@ -5219,7 +5219,7 @@ END_VAR
     },
     {
       "id": "rung_main_74d0c74d-9ebd-4643-989c-9bb855966025",
-      "comment": "",
+      "comment": "If ledNo = 2 then activate green LED",
       "defaultBounds": [
         300,
         100
@@ -6368,7 +6368,7 @@ END_VAR
     },
     {
       "id": "rung_main_d982212d-f892-4fd8-ac02-9bebd6aadd59",
-      "comment": "",
+      "comment": "If ledNo = 3 then activate blue LED",
       "defaultBounds": [
         300,
         100
